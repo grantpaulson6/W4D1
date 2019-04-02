@@ -44,8 +44,7 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
 
     if @user
-      @user.destroy
-      render plain: "FATALITY"
+      render plain: @user.destroy
     else
       render plain: "User not found"
     end
@@ -54,6 +53,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:username)
   end
 end
