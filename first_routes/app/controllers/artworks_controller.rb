@@ -2,6 +2,12 @@ class ArtworksController < ApplicationController
 
   def index
     @artworks = Artwork.all
+    if params.has_key?(:user_id)
+      shared_art = User.find(params[:user_id]).shared_artworks
+      # shared_art = ArtworkShare.where(viewer_id: params[:user_id])
+      created_art = Artwork.where(artist_id: params[:user_id])
+      @artworks = shared_art + created_art
+    end
 
     if @artworks
       render json: @artworks
@@ -53,6 +59,6 @@ class ArtworksController < ApplicationController
   private
 
   def artwork_params
-    params.require(:artwork).permit(:title, :image_url, :artist_id)
+    params.require(:artwork).permit(:title, :image_url, :artist_id, :user_id)
   end
 end
